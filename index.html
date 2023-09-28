@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- Recommended meta tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>PyScript Tetris</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://pyscript.net/releases/2023.05.1/pyscript.css" />
+        <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
+        <!--<script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script>-->
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+
+    </head>
+    <body>
+    <py-config src="./config.toml"></py-config>
+    <py-script>
+    from js import console
+
+    class Grid:
+        def __init__(self):
+            self.num_rows  = 6
+            self.num_cols = 10
+            self.cell_size = 30
+            self.grid = [[0 for _ in range(self.num_cols)] for _ in range(self.num_rows)]
+
+        def draw_grid(self):
+            console.log("running draw_grid_in_class")
+            canvas = Element('my-canvas').element
+            ctx = canvas.getContext('2d')
+            ctx.strokeStyle = 'black'
+            ctx.lineWidth = 1
+            console.log('num_rows:', self.num_rows)
+            # 세로선 그리기
+            for col in range(self.num_cols + 1):
+                ctx.beginPath()
+                ctx.moveTo(col * self.cell_size, 0)
+                ctx.lineTo(col * self.cell_size, self.num_rows * self.cell_size)
+                ctx.stroke()
+
+            # 가로선 그리기
+            for row in range(self.num_rows + 1):
+                console.log('row:', row)
+                ctx.beginPath()
+                ctx.moveTo(0, row * self.cell_size)
+                ctx.lineTo(self.num_cols * self.cell_size, row * self.cell_size)
+                ctx.stroke()
+
+    
+    grid = Grid()
+
+    def test_function(*args):
+        console.log("test_function")
+        Element('start-page').element.style.display = 'none'
+        Element('game-page').element.style.display = 'block'
+        grid.draw_grid()
+
+    #console.log('num_rows:', Grid().num_rows)
+    #check_import()
+    </py-script>
+        <!-- PyScript configuration including import packages -->
+        
+        
+
+
+        <!-- your code goes here... -->
+        <div id="start-page">
+            <h1>PYSCRIPT TETRIS</h1>
+            <p>Hello, This is PyScript Tetris!</p>
+            <div class="start-container">
+                <button id="start-button" type="button" pys-onClick="test_function">Start</button>
+            </div>
+        </div>
+
+
+        <div id="game-page" style="display:none; background-color:green; height:100vh">
+            <p>Game Page</p>
+            <canvas id="my-canvas" style="background-color:blue"></canvas>
+
+        </div>
+        
+    <py-script src="./utils.py"></py-script>
+    <script type="py" src="./grid.py" config="./config.toml"></script>
+    </body>
+</html>
